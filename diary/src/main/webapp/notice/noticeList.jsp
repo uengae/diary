@@ -60,6 +60,17 @@
 	if (totalRow % rowPerPage != 0) {
 		lastPage += 1;
 	}
+	// 페이지 수 나열
+	int pagePerPage = 10;
+	int startPageNum = ((currentPage - 1) / pagePerPage) * pagePerPage + 1;
+	
+	// 마지막 페이지 수 나열
+	int maxPageNum = startPageNum + pagePerPage - 1;
+	
+	// 마지막 페이지 예외 처리
+	if (maxPageNum > lastPage) {
+		maxPageNum = lastPage;
+	}
 %>
 <!DOCTYPE html>
 <html>
@@ -69,13 +80,9 @@
 	<link id="theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-	<div class="container-fluid"><!-- 메인메뉴 -->
-		<a class="navbar-brand" href="./home.jsp">홈으로</a>
-		<a class="navbar-brand" href="./noticeList.jsp">공지 리스트</a>
-		<a class="navbar-brand" href="./scheduleList.jsp">일정 리스트</a>
+	<div>
+		<jsp:include page="/inc/headMainBar.jsp"></jsp:include>
 	</div>
-</nav>
 	<h1>공지 리스트</h1>
 	<table class="table table-striped">
 		<tr>
@@ -101,34 +108,17 @@
 		<tr>
 		<%
 			// 첫페이지
-			if (currentPage > 1) {
+			if (startPageNum > 1) {
 		%>
 			<td>
-				<a href="./noticeList.jsp?currentPage=<%=currentPage - 1%>">
+				<a href="./noticeList.jsp?currentPage=<%=currentPage - pagePerPage%>">
 					이전
 				</a>
 			</td>
 		<%
-			} else {
-		%>
-			<td>
-				처음
-			</td>
-		<%
 			}
 		
-			// 페이지 수 나열
-			int startPageNum = ((currentPage - 1) / 10) * 10 + 1;
-			
-			// 마지막 페이지 수 나열
-			int maxPageNum = startPageNum + 10;
-			
-			// 마지막 페이지 예외 처리
-			if (maxPageNum > lastPage) {
-				maxPageNum = lastPage + 1;
-			}
-			
-			for (int i = startPageNum; i < maxPageNum; i++) {
+			for (int i = startPageNum; i <= maxPageNum; i++) {
 		%>
 				<td>
 				<a href="./noticeList.jsp?currentPage=<%=i%>">
@@ -139,18 +129,12 @@
 			}
 			
 			// 마지막 페이지
-			if (currentPage < lastPage) {
+			if (maxPageNum < lastPage) {
 		%>
 			<td>
-				<a href="./noticeList.jsp?currentPage=<%=currentPage + 1%>">
+				<a href="./noticeList.jsp?currentPage=<%=currentPage + pagePerPage%>">
 					다음
 				</a>
-			</td>
-		<%
-			} else {
-		%>
-			<td>
-				마지막
 			</td>
 		<%
 			}

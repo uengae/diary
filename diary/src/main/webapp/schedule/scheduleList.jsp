@@ -86,7 +86,7 @@
 	Class.forName("org.mariadb.jdbc.Driver");
 	Connection conn = DriverManager.getConnection(
 			"jdbc:mariadb://127.0.0.1:3306/diary","root","java1234");
-	String sql = "select schedule_no scheduleNo, day(schedule_date) scheduleDate, left(schedule_memo, 5) scheduleMemo, schedule_color scheduleColor from schedule where year(schedule_date) = ? and month(schedule_date) = ? order by month(schedule_date) asc";
+	String sql = "select schedule_no scheduleNo, day(schedule_date) scheduleDate, left(schedule_memo, 5) scheduleMemo, schedule_color scheduleColor from schedule where year(schedule_date) = ? and month(schedule_date) = ? order by date(schedule_date)";
 	PreparedStatement stmt = conn.prepareStatement(sql);
 	stmt.setInt(1, targetYear);
 	stmt.setInt(2, targetMonth + 1);
@@ -114,13 +114,9 @@
 	<link id="theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-	<div class="container-fluid"><!-- 메인메뉴 -->
-		<a class="navbar-brand" href="./home.jsp">홈으로</a>
-		<a class="navbar-brand" href="./noticeList.jsp">공지 리스트</a>
-		<a class="navbar-brand" href="./scheduleList.jsp">일정 리스트</a>
+	<div>
+		<jsp:include page="/inc/headMainBar.jsp"></jsp:include>
 	</div>
-</nav>
 	<div>
 	<table class="position-relative start-50 translate-middle-x">
 		<tr>
@@ -136,16 +132,18 @@
 		</tr>
 	</table>
 	</div>
-	<table class="table table-striped">
-		<tr>
-			<th>일</th>
-			<th>월</th>
-			<th>화</th>
-			<th>수</th>
-			<th>목</th>
-			<th>금</th>
-			<th>토</th>
-		</tr>
+	<table class="table">
+		<thead class="table-secondary">
+			<tr>
+				<th>일</th>
+				<th>월</th>
+				<th>화</th>
+				<th>수</th>
+				<th>목</th>
+				<th>금</th>
+				<th>토</th>
+			</tr>
+		</thead>
 		<tr>
 			<%
 				for(int i = 0; i < totalTd; i += 1) {
@@ -191,12 +189,27 @@
 								</div>
 								<div><!-- 날짜별 일정 -->
 									<%
+										// cnt 는 값을 4개만 보여주기위함
+										// blankCnt 는 안에 값이 없어도 4칸을 유지하기 위해 만듬
+										int cnt = 0;
+										int blankCnt = 4;
 										for(Schedule s : scheduleList){
 											if(num == Integer.parseInt(s.scheduleDate)) {
+												cnt++;
+												blankCnt--;
 									%>
 												<div style="color: <%=s.scheduleColor%>"><%=s.scheduleMemo%></div>
 									<%
 											}
+											if (cnt == 4){
+												cnt = 0;
+												break;
+											}
+										}
+										for(int j = 0; j < blankCnt; j++){
+									%>
+											<div>&nbsp;</div>
+									<%
 										}
 									%>
 								</div>

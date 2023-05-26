@@ -68,13 +68,9 @@
 	<link id="theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-	<div class="container-fluid"><!-- 메인메뉴 -->
-		<a class="navbar-brand" href="./home.jsp">홈으로</a>
-		<a class="navbar-brand" href="./noticeList.jsp">공지 리스트</a>
-		<a class="navbar-brand" href="./scheduleList.jsp">일정 리스트</a>
+	<div>
+		<jsp:include page="/inc/headMainBar.jsp"></jsp:include>
 	</div>
-</nav>
 	<h1>스케쥴 입력</h1>
 	<!-- m 값을 넘겨줄때 api값으로 생각해야 하기때문에 m에 -1을 해준다 -->
 	<form action="./insertScheduleAction.jsp?y=<%=y%>&m=<%=m-1%>&d=<%=d%>" method="post" id="submit">
