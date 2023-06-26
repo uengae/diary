@@ -111,7 +111,7 @@
 			if (startPageNum > 1) {
 		%>
 			<td>
-				<a href="./noticeList.jsp?currentPage=<%=currentPage - pagePerPage%>">
+				<a class="btn btn-outline-success btn-sm" href="./noticeList.jsp?currentPage=<%=currentPage - pagePerPage%>">
 					이전
 				</a>
 			</td>
@@ -119,9 +119,13 @@
 			}
 		
 			for (int i = startPageNum; i <= maxPageNum; i++) {
+				String pageBtn = "btn btn-outline-secondary btn-sm";
+				if(i == currentPage){
+					pageBtn =  "btn btn-secondary btn-sm";
+				}
 		%>
 				<td>
-				<a href="./noticeList.jsp?currentPage=<%=i%>">
+				<a class="<%=pageBtn%>" href="./noticeList.jsp?currentPage=<%=i%>">
 				<%=i%>
 				</a>
 				</td>
@@ -132,7 +136,7 @@
 			if (maxPageNum < lastPage) {
 		%>
 			<td>
-				<a href="./noticeList.jsp?currentPage=<%=currentPage + pagePerPage%>">
+				<a class="btn btn-outline-success btn-sm" href="./noticeList.jsp?currentPage=<%=currentPage + pagePerPage%>">
 					다음
 				</a>
 			</td>
